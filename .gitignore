@@ -25,6 +25,9 @@ bld/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
+# Visual Studio cache directory
+.vs/
+
 #NUNIT
 *.VisualState.xml
 TestResult.xml
