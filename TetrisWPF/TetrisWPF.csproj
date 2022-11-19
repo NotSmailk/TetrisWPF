@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Sprites\BG\Background.png" />
+    <None Remove="Assets\Sprites\BlockImages\Block-Empty.png" />
+    <None Remove="Assets\Sprites\BlockImages\Block-I.png" />
+    <None Remove="Assets\Sprites\BlockImages\Block-J.png" />
+    <None Remove="Assets\Sprites\BlockImages\Block-L.png" />
+    <None Remove="Assets\Sprites\BlockImages\Block-O.png" />
+    <None Remove="Assets\Sprites\BlockImages\Block-S.png" />
+    <None Remove="Assets\Sprites\BlockImages\Block-T.png" />
+    <None Remove="Assets\Sprites\BlockImages\Block-Z.png" />
+    <None Remove="Assets\Sprites\Icon.ico" />
+    <None Remove="Assets\Sprites\TIles\TileBlue.png" />
+    <None Remove="Assets\Sprites\TIles\TileCyan.png" />
+    <None Remove="Assets\Sprites\TIles\TileEmpty.png" />
+    <None Remove="Assets\Sprites\TIles\TileGreen.png" />
+    <None Remove="Assets\Sprites\TIles\TileOrange.png" />
+    <None Remove="Assets\Sprites\TIles\TilePurple.png" />
+    <None Remove="Assets\Sprites\TIles\TileRed.png" />
+    <None Remove="Assets\Sprites\TIles\TileYellow.png" />
+    <None Remove="Background.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Sprites\BG\Background.png" />
+    <Resource Include="Assets\Sprites\BlockImages\Block-Empty.png" />
+    <Resource Include="Assets\Sprites\BlockImages\Block-I.png" />
+    <Resource Include="Assets\Sprites\BlockImages\Block-J.png" />
+    <Resource Include="Assets\Sprites\BlockImages\Block-L.png" />
+    <Resource Include="Assets\Sprites\BlockImages\Block-O.png" />
+    <Resource Include="Assets\Sprites\BlockImages\Block-S.png" />
+    <Resource Include="Assets\Sprites\BlockImages\Block-T.png" />
+    <Resource Include="Assets\Sprites\BlockImages\Block-Z.png" />
+    <Resource Include="Assets\Sprites\Icon.ico" />
+    <Resource Include="Assets\Sprites\TIles\TileBlue.png" />
+    <Resource Include="Assets\Sprites\TIles\TileCyan.png" />
+    <Resource Include="Assets\Sprites\TIles\TileEmpty.png" />
+    <Resource Include="Assets\Sprites\TIles\TileGreen.png" />
+    <Resource Include="Assets\Sprites\TIles\TileOrange.png" />
+    <Resource Include="Assets\Sprites\TIles\TilePurple.png" />
+    <Resource Include="Assets\Sprites\TIles\TileRed.png" />
+    <Resource Include="Assets\Sprites\TIles\TileYellow.png" />
+  </ItemGroup>
+
+</Project>
