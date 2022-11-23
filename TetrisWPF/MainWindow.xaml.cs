@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace TetrisWPF
 {
@@ -13,40 +11,15 @@ namespace TetrisWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly ImageSource[] m_tileImages = new ImageSource[]
-        {
-            new BitmapImage(new Uri("Assets/Sprites/Tiles/TileEmpty.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/Sprites/Tiles/TileCyan.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/Sprites/Tiles/TileBlue.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/Sprites/Tiles/TileOrange.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/Sprites/Tiles/TileYellow.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/Sprites/Tiles/TileGreen.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/Sprites/Tiles/TilePurple.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/Sprites/Tiles/TileRed.png", UriKind.Relative))
-        };
-        private readonly ImageSource[] m_blockImages = new ImageSource[]
-        { 
-            new BitmapImage(new Uri("Assets/Sprites/BlockImages/BLock-Empty.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/Sprites/BlockImages/BLock-I.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/Sprites/BlockImages/BLock-J.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/Sprites/BlockImages/BLock-L.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/Sprites/BlockImages/BLock-O.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/Sprites/BlockImages/BLock-S.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/Sprites/BlockImages/BLock-T.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/Sprites/BlockImages/BLock-Z.png", UriKind.Relative))
-        };
-        private readonly Image[,] m_imageControls;
-        private readonly int m_maxDelay = 1000;
-        private readonly int m_minDelay = 75;
-        private readonly int m_delayDecrease = 25;
+        private readonly Image[,] _imageControls;
 
-        private GameState m_gameState = new GameState();
+        private GameState _gameState = new GameState();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            m_imageControls = SetupGameCanvas(m_gameState.GameGrid);
+            _imageControls = SetupGameCanvas(_gameState.GameGrid);
         }
 
         private Image[,] SetupGameCanvas(GameGrid grid)
@@ -76,12 +49,12 @@ namespace TetrisWPF
 
         private void Pause()
         {
-            if (!m_gameState.GameStarted || m_gameState.GameOver)
+            if (!_gameState.GameStarted || _gameState.GameOver)
                 return;
 
-            m_gameState.Pause();
+            _gameState.Pause();
 
-            GamePausedMenu.Visibility = m_gameState.GamePaused ? Visibility.Visible : Visibility.Hidden;
+            GamePausedMenu.Visibility = _gameState.GamePaused ? Visibility.Visible : Visibility.Hidden;
         }
 
         #region DrawMethods
@@ -93,8 +66,8 @@ namespace TetrisWPF
                 for (int c = 0; c < grid.Columns; c++)
                 {
                     int id = grid[r, c];
-                    m_imageControls[r, c].Opacity = 1f;
-                    m_imageControls[r, c].Source = m_tileImages[id];
+                    _imageControls[r, c].Opacity = 1f;
+                    _imageControls[r, c].Source = GameData.TileImages[id];
                 }
             }
         }
@@ -103,8 +76,8 @@ namespace TetrisWPF
         {
             foreach (Position p in block.TilePosition())
             {
-                m_imageControls[p.Row, p.Column].Opacity = 1f;
-                m_imageControls[p.Row, p.Column].Source = m_tileImages[block.Id];
+                _imageControls[p.Row, p.Column].Opacity = 1f;
+                _imageControls[p.Row, p.Column].Source = GameData.TileImages[block.Id];
             }
         }
 
@@ -114,22 +87,22 @@ namespace TetrisWPF
                 return;
 
             Block block = blockQueue.NextBlock!;
-            NextImage.Source = m_blockImages[block.Id];
+            NextImage.Source = GameData.BlockImages[block.Id];
         }
 
         private void DrawHeldBlock(Block heldBlock)
         {
-            HoldImage.Source = heldBlock == null ? m_blockImages[0] : m_blockImages[heldBlock.Id];
+            HoldImage.Source = heldBlock == null ? GameData.BlockImages[0] : GameData.BlockImages[heldBlock.Id];
         }
 
         private void DrawGhostBlock(Block block)
         {
-            int dropDistance = m_gameState.BlockDropDistance();
+            int dropDistance = _gameState.BlockDropDistance();
 
             foreach (Position p in block.TilePosition())
             {
-                m_imageControls[p.Row + dropDistance, p.Column].Opacity = 0.25f;
-                m_imageControls[p.Row + dropDistance, p.Column].Source = m_tileImages[block.Id];
+                _imageControls[p.Row + dropDistance, p.Column].Opacity = 0.25f;
+                _imageControls[p.Row + dropDistance, p.Column].Source = GameData.TileImages[block.Id];
             }
         }
 
@@ -137,31 +110,31 @@ namespace TetrisWPF
         {
             DrawGrid(gameState.GameGrid);
 
-            DrawGhostBlock(m_gameState.CurrentBlock);
+            DrawGhostBlock(_gameState.CurrentBlock);
             DrawBlock(gameState.CurrentBlock);
 
-            DrawNextBlock(m_gameState.BlockQueue);
-            DrawHeldBlock(m_gameState.HeldBlock);
+            DrawNextBlock(_gameState.BlockQueue);
+            DrawHeldBlock(_gameState.HeldBlock);
 
-            ScoreText.Text = $"Score: {m_gameState.Score}";
+            ScoreText.Text = $"Score: {_gameState.Score}";
         }
 
         #endregion DrawMethods
 
         private async Task GameLoop()
         {
-            Draw(m_gameState);
+            Draw(_gameState);
 
-            while (!m_gameState.GameOver)
+            while (!_gameState.GameOver)
             {
-                int delay = Math.Max(m_minDelay, m_maxDelay - (m_gameState.Score * m_delayDecrease));
+                int delay = Math.Max(GameData.MinDelay, GameData.MaxDelay - (_gameState.Score * GameData.DelayDecrease));
                 await Task.Delay(delay);
-                m_gameState.MoveBlockDown();
-                Draw(m_gameState);
+                _gameState.MoveBlockDown();
+                Draw(_gameState);
             }
 
             GameOverMenu.Visibility = Visibility.Visible;
-            FinaleScoreText.Text = $"Score: {m_gameState.Score}";
+            FinaleScoreText.Text = $"Score: {_gameState.Score}";
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -169,31 +142,31 @@ namespace TetrisWPF
             switch (e.Key)
             {
                 case Key.Left:
-                    m_gameState.MoveBlockLeft();
+                    _gameState.MoveBlockLeft();
                     break;
 
                 case Key.Right:
-                    m_gameState.MoveBlockRight();
+                    _gameState.MoveBlockRight();
                     break;
 
                 case Key.Down:
-                    m_gameState.MoveBlockDown();
+                    _gameState.MoveBlockDown();
                     break;
 
                 case Key.Q:
-                    m_gameState.RotateBlockCCW();
+                    _gameState.RotateBlockCCW();
                     break;
 
                 case Key.E:
-                    m_gameState.RotateBlockCW();
+                    _gameState.RotateBlockCW();
                     break;
 
                 case Key.H:
-                    m_gameState.HoldBlock();
+                    _gameState.HoldBlock();
                     break;
 
                 case Key.Space:
-                    m_gameState.DropBlock();
+                    _gameState.DropBlock();
                     break;
 
                 case Key.P:
@@ -212,19 +185,17 @@ namespace TetrisWPF
                     return;
             }
 
-            Draw(m_gameState);
+            Draw(_gameState);
         }
 
         private void GameCanvas_Loaded(object sender, RoutedEventArgs e)
         {
-            m_gameState = new GameState();
+            _gameState = new GameState();
         }
 
         private async void PlayAgain_Click(object sender, RoutedEventArgs e)
         {
-            m_gameState = new GameState();
-
-            m_gameState.GameStarted = true;
+            _gameState.GameStarted = true;
 
             GameOverMenu.Visibility = Visibility.Hidden;
 
@@ -233,7 +204,9 @@ namespace TetrisWPF
 
         private async void Start_Click(object sender, RoutedEventArgs e)
         {
-            m_gameState.GameStarted = true;
+            _gameState = new GameState();
+
+            _gameState.GameStarted = true;
 
             StartMenu.Visibility = Visibility.Hidden;
 

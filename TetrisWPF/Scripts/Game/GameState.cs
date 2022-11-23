@@ -2,23 +2,23 @@
 {
     public class GameState
     {
-        private Block m_currentBlock;
+        private Block _currentBlock;
 
         public Block CurrentBlock 
         {
-            get => m_currentBlock!;
+            get => _currentBlock!;
 
             private set
             {
-                m_currentBlock = value;
-                m_currentBlock.Reset();
+                _currentBlock = value;
+                _currentBlock.Reset();
 
                 for (int i = 0; i < 2; i++)
                 {
-                    m_currentBlock.Move(1, 0);
+                    _currentBlock.Move(1, 0);
 
                     if (!BlockFits())
-                        m_currentBlock.Move(-1, 0);
+                        _currentBlock.Move(-1, 0);
                 }
             }
         }
@@ -46,7 +46,7 @@
 
         public void HoldBlock()
         {
-            if (!CanHold || GameOver || GamePaused)
+            if (!CanHold || GameOver || GamePaused || !GameStarted)
                 return;
 
             if (HeldBlock == null)
@@ -66,7 +66,7 @@
 
         public void RotateBlockCW()
         {
-            if (GameOver || GamePaused)
+            if (GameOver || GamePaused || !GameStarted)
                 return;
 
             CurrentBlock.RotateCW();
@@ -77,7 +77,7 @@
 
         public void RotateBlockCCW()
         {
-            if (GameOver || GamePaused)
+            if (GameOver || GamePaused || !GameStarted)
                 return;
 
             CurrentBlock.RotateCCW();
@@ -88,7 +88,7 @@
 
         public void MoveBlockLeft()
         {
-            if (GameOver || GamePaused)
+            if (GameOver || GamePaused || !GameStarted)
                 return;
 
             CurrentBlock.Move(0, -1);
@@ -99,7 +99,7 @@
 
         public void MoveBlockRight()
         {
-            if (GameOver || GamePaused)
+            if (GameOver || GamePaused || !GameStarted)
                 return;
 
             CurrentBlock.Move(0, 1);
@@ -110,7 +110,7 @@
 
         public void MoveBlockDown()
         {
-            if (GameOver || GamePaused)
+            if (GameOver || GamePaused || !GameStarted)
                 return;
 
             CurrentBlock.Move(1, 0);
@@ -124,7 +124,7 @@
 
         public void DropBlock()
         {
-            if (GameOver || GamePaused)
+            if (GameOver || GamePaused || !GameStarted)
                 return;
 
             CurrentBlock.Move(BlockDropDistance(), 0);

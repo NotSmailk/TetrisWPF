@@ -4,7 +4,7 @@ namespace TetrisWPF
 {
     public class BlockQueue
     {
-        private readonly Block[] m_blocks = new Block[]
+        private readonly Block[] _blocks = new Block[]
         {
             new IBlock(),
             new JBlock(),
@@ -14,7 +14,7 @@ namespace TetrisWPF
             new TBLock(),
             new ZBlock()
         };
-        private readonly Random m_random = new Random();
+        private readonly Random _random = new Random();
 
         public Block? NextBlock { get; private set; }
 
@@ -25,7 +25,7 @@ namespace TetrisWPF
 
         private Block RandomBlock()
         {
-            return m_blocks[m_random.Next(m_blocks.Length)];
+            return _blocks[_random.Next(_blocks.Length)];
         }
 
         public Block GetAnyUpdate()
